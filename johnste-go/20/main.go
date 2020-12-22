@@ -29,10 +29,7 @@ func run(path string) {
 }
 
 func a(squares map[int]square) int {
-
 	matches := getMatches(squares)
-	//fmt.Println(matches)
-
 	product := 1
 	for id, match := range matches {
 		if match == 2 {
@@ -47,9 +44,7 @@ type vec2d struct {
 }
 
 func b(squares map[int]square) int {
-
 	matches := getMatches(squares)
-	//fmt.Println(matches)
 
 	startSquare := square{}
 	for id, match := range matches {
@@ -66,7 +61,6 @@ func b(squares map[int]square) int {
 
 	for len(squares) > 0 {
 		for pos, s := range puzzle {
-			//fmt.Println("  Checking", pos, s.id, len(puzzle), len(squares))
 			for _, square := range squares {
 				if square.id == s.id {
 					continue
@@ -87,8 +81,6 @@ func b(squares map[int]square) int {
 					}
 
 					puzzle[newpos] = s2
-
-					//fmt.Println("    Add", s2.id, "to the", direction, "of", s.id, newpos)
 					delete(squares, s2.id)
 					break
 				}
@@ -119,11 +111,8 @@ func b(squares map[int]square) int {
 
 	}
 
-	//fmt.Println(strings.Join(bigass, "\n"))
-
 	bigpuzzle := square{420, bigass}
 	gap := height*width - 19
-	fmt.Println("gap", gap)
 	gapstr := fmt.Sprintf("%d", gap)
 
 	monster := "(#)(?:[#.\\s]){" + gapstr + "}(#)....(#)(#)....(#)(#)....(#)(#)(#)(?:[#.\\s]){" + gapstr + "}(#)..(#)..(#)..(#)..(#)..(#)"
@@ -162,18 +151,14 @@ func b(squares map[int]square) int {
 	finalpuzzle := strings.Join(bigpuzzle.pixels, "\n")
 	gap += 1 //account for newlines
 	gapstr = fmt.Sprintf("%d", gap)
-	monster = "(#)(?:[#.\\s]){" + gapstr + "}(#)....(#)(#)....(#)(#)....(#)(#)(#)(?:[#.\\s]){" + gapstr + "}(#)..(#)..(#)..(#)..(#)..(#)"
+	monster = "(#)(?:[#O.\\s]){" + gapstr + "}(#)....(#)(#)....(#)(#)....(#)(#)(#)(?:[#.O\\s]){" + gapstr + "}(#)..(#)..(#)..(#)..(#)..(#)"
 	re = regexp.MustCompile(monster)
-
 	totes := 0
 	for {
-		//replacematches2 := re.FindStringSubmatch(finalpuzzle)
-		replacematches := re.FindStringSubmatchIndex(finalpuzzle)
-		// fmt.Println("va", replacematches2)
-		// fmt.Println("vx", replacematches)
-		for i := 2; i < len(replacematches); i += 2 {
-			//fmt.Println("reppp", finalpuzzle, replacematches[i], replacematches[i]+1, finalpuzzle[:replacematches[i]]+"O"+finalpuzzle[:replacematches[i]])
 
+		replacematches := re.FindStringSubmatchIndex(finalpuzzle)
+
+		for i := 2; i < len(replacematches); i += 2 {
 			finalpuzzle = finalpuzzle[:replacematches[i]] + "O" + finalpuzzle[replacematches[i]+1:]
 		}
 
@@ -189,7 +174,7 @@ func b(squares map[int]square) int {
 	matches2 := rehash.FindAllStringIndex(finalpuzzle, -1)
 
 	fmt.Println(finalpuzzle)
-	fmt.Println("angelina", totes, len(matches2))
+	fmt.Println("B", totes, len(matches2))
 
 	return 0
 }
